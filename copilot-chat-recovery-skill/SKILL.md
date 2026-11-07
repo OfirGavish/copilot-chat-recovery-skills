@@ -1,13 +1,13 @@
 ---
 name: copilot-chat-recovery
-description: For native Copilot Chat skills where available and Agent Builder, guide users through a manual Purview eDiscovery search/export, then execute the bundled offline script yourself on their uploaded ZIP to rebuild a You/Copilot Word transcript. Use for chats that will not load or retained-chat reconstruction. Recovers text, not the original chat UI; never purges content or changes retention or holds. Use the separate Cowork skill for Local Browser automation.
+description: For native Copilot Chat skills where available and Agent Builder, guide users through a manual Purview eDiscovery search/export, then execute the bundled offline script yourself on their uploaded ZIP to rebuild a You/Copilot Word transcript. Use for chats that will not load or retained-chat reconstruction. Recovers text, not the original chat UI; never purges content or changes retention or holds. Use the separate Cowork/Scout skill for authorized browser automation.
 ---
 
 # Copilot chat recovery - guided export, agent-executed reconstruction
 
 ## Two-stage contract
 
-Stage A is HUMAN-OPERATED Purview: guide the user or their authorized administrator through permissions, content search, context export and download. Copilot Chat and Agent Builder cannot open a browser to perform these steps. Do not attempt browser automation, login, role assignment, content-search creation or export APIs as part of this skill. Cowork Local Browser automation is provided by the separate cowork-copilot-chat-recovery skill.
+Stage A is HUMAN-OPERATED Purview: guide the user or their authorized administrator through permissions, content search, context export and download. Copilot Chat and Agent Builder cannot open a browser to perform these steps. Do not attempt browser automation, login, role assignment, content-search creation or export APIs as part of this skill. Cowork Local Browser and Microsoft Scout browser automation are supported by the separate cowork-copilot-chat-recovery skill.
 
 Stage B is AGENT-EXECUTED reconstruction: once the user attaches the downloaded Items ZIP, resolve the actual uploaded file into the host's script environment and execute scripts/recover-chat.cjs yourself. Do not merely describe reconstruction, ask the user to open each MSG/HTML, or hand them a terminal command when script execution is available.
 

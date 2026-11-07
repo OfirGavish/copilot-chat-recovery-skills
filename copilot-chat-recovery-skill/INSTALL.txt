@@ -11,9 +11,10 @@ tenant/private-preview features) and Agent Builder. The agent GUIDES the user or
 administrator through Purview search/export/download, then EXECUTES reconstruction
 on the user-uploaded Items ZIP. No browser automation is attempted.
 
-cowork-copilot-chat-recovery-skill.zip: Cowork. Uses the authorized LOCAL BROWSER feature
-to run a previewed/approved search and export when the intended signed-in account has
-Purview permissions. If Local Browser, authentication, permissions or downloading is
+cowork-copilot-chat-recovery-skill.zip: Cowork or Microsoft Scout. Uses authorized
+Cowork Local Browser or Scout browser automation for a previewed/approved search
+and export when the intended signed-in account has Purview permissions.
+If host browser access, authentication, permissions or downloading is
 blocked, it guides the user through that step instead. Then the agent EXECUTES the same
 reconstruction engine. Supplying an export skips browser/search work in either variant.
 
@@ -39,17 +40,33 @@ verify the displayed tenant/account has the required eDiscovery search and expor
 Microsoft documentation:
 https://learn.microsoft.com/en-us/copilot/cowork/cowork-customize#upload-a-skill
 
+SCOUT CUSTOM-SKILL SETUP
+Use the separate browser-assisted cowork-copilot-chat-recovery-skill.zip for Scout.
+Keep its existing package/skill name: cowork-copilot-chat-recovery.
+Extract that ZIP into an approved private local directory.
+Ask Scout to register a custom skill from the extracted SKILL.md, retaining its
+instructions and recording the actual absolute path to scripts/recover-chat.cjs.
+Scout's text-only custom-skill registration does not itself install companion files;
+keep the extracted package in place. Do not assume a Cowork ZIP-upload UI in Scout.
+Before execution, load the registered skill through Scout's skill-loading tool.
+Use authorized Scout browser, local-file and shell tools; verify the actual browser
+account/tenant rather than assuming the normal browser's login is shared.
+If browser downloads are blocked, manually download the Items ZIP and provide Scout
+its exact local path; Scout must obtain folder access and verify the file is readable.
+
 USER FLOW
 Start with the conversation URL or title, mailbox and approximate timeframe.
 Chat/Agent Builder: follow the skill's Purview guidance, download the Items ZIP, and attach it.
-Cowork: approve the scoped search/export and let Local Browser run it, or supply the ZIP yourself.
+Cowork/Scout: approve the scoped search/export and let authorized host browser tools
+run it, or supply the ZIP yourself through an attachment or accessible local path.
 The agent should then execute the included script and return a downloadable Word transcript,
 not instruct you to parse HTML files or run terminal commands.
 You can start by attaching an existing export; the skill will skip the Purview stage.
 
 RUNTIME BOUNDARIES
 The skill does not grant Purview permissions, browser control, connectors or filesystem access.
-Only the Cowork variant uses actual authorized Local Browser tools for Purview actions.
+Only the browser-assisted Cowork/Scout variant uses authorized host browser tools
+for Purview actions. Skill import/registration does not grant those capabilities.
 Search/export and any optional role assignment have separate human approval gates.
 The guided variant does not attempt role/search/export writes itself.
 Blocked downloads require a manual download and attachment, not a restriction bypass.
@@ -85,7 +102,7 @@ Recovered-Copilot-Chat.json
 Recovered-Copilot-Chat-Sources.zip (matching native MSGs, HTML attachments, hash manifest)
 
 The helper itself is strictly offline; it does not log in, change roles, create searches
-or export from Purview. Stage A belongs to the user (guided) or approved Cowork Local Browser.
+or export from Purview. Stage A belongs to the user (guided) or approved Cowork/Scout browser tools.
 It generates DOCX, JSON and source ZIP; PDF rendering and sensitivity labels use approved
 host document capabilities. Publish the actual generated files through the host's artifact
 mechanism, not invented download links or an inaccessible sandbox path.

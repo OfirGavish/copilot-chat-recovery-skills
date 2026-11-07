@@ -11,19 +11,22 @@ Two importable skills for reconstructing a retained Microsoft 365 Copilot conver
 | Native Copilot Chat skills, where available | [copilot-chat-recovery-skill.zip](copilot-chat-recovery-skill.zip) | Guides you or your administrator through search, export and download. |
 | Copilot Chat Agent Builder | [copilot-chat-recovery-skill.zip](copilot-chat-recovery-skill.zip) | Same guided workflow; reconstructs from the uploaded export. |
 | Copilot Cowork | [cowork-copilot-chat-recovery-skill.zip](cowork-copilot-chat-recovery-skill.zip) | Uses authorized Local Browser for approved search/export actions, with guided fallback if browser access or downloading is unavailable. |
+| Microsoft Scout | [cowork-copilot-chat-recovery-skill.zip](cowork-copilot-chat-recovery-skill.zip) | Uses Scout's authorized browser automation, local-file access and shell execution, with a manual download handoff when needed. |
 
 Both packages use the **same bundled offline reconstruction engine**. If you already have an Items ZIP, either skill skips the Purview step and starts reconstruction.
 
-Use these skills when a retained Copilot chat will not open, you need a readable transcript, or you want to combine multiple exports of the same conversation. Cowork is a host for this workflow; this is not a general recovery tool for every Cowork task format.
+Use these skills when a retained Copilot chat will not open, you need a readable transcript, or you want to combine multiple exports of the same conversation. Cowork and Scout are hosts for recovering Microsoft 365 Copilot text; this does not recover Scout's own session history or guarantee support for every Cowork task format.
+
+The browser-assisted package retains the name `cowork-copilot-chat-recovery-skill.zip` and skill ID `cowork-copilot-chat-recovery` for compatibility. There is no separate Scout package.
 
 ## What is in this repository?
 
 | Path | Contents |
 | --- | --- |
 | `copilot-chat-recovery-skill.zip` | Ready-to-import Chat/Agent Builder package. |
-| `cowork-copilot-chat-recovery-skill.zip` | Ready-to-import Cowork package. |
+| `cowork-copilot-chat-recovery-skill.zip` | Browser-assisted Cowork/Scout package; import in Cowork or extract/register in Scout. |
 | `copilot-chat-recovery-skill/` | Unpacked guided skill, installation instructions and executable helper. |
-| `cowork-copilot-chat-recovery-skill/` | Unpacked Local Browser skill, installation instructions and the same helper. |
+| `cowork-copilot-chat-recovery-skill/` | Unpacked Cowork/Scout browser-assisted skill, installation instructions and the same helper. |
 
 Each skill folder and ZIP contains:
 
@@ -54,13 +57,17 @@ Download the **individual skill ZIP** linked above, not GitHub's whole-repositor
 
 **Cowork:** Use **Customize > Skills > Upload skill** to upload `cowork-copilot-chat-recovery-skill.zip`, wait for syncing and start a new conversation. Enable/connect Local Browser if you want browser-assisted export, and verify the signed-in account and tenant.
 
+**Microsoft Scout:** Extract `cowork-copilot-chat-recovery-skill.zip` into an approved private local directory. Ask Scout to register a custom skill using the extracted `SKILL.md` instructions and record the actual absolute path to the companion `scripts/recover-chat.cjs` in those instructions. Keep the extracted folder: Scout's text-only custom-skill registration does not copy executable resources. Load the registered skill before running it; do not assume Scout has Cowork's ZIP-import UI.
+
+Scout uses its own authorized browser, local-file and shell tools. Verify the account/tenant in that browser session; it may not share your normal browser login. If automated downloads are blocked, download the Items ZIP manually and supply its exact local path. Scout must obtain the required folder access and verify readability.
+
 See the package's `INSTALL.txt` and the Microsoft references below for host-specific details.
 
 ## Run the recovery
 
 1. Ask the agent: "Recover my retained Copilot conversation as a turn-by-turn Word transcript." Supply the conversation URL, authorized mailbox and approximate timeframe.
-2. Follow guided Purview steps in Chat/Agent Builder. In Cowork, review and approve the exact search/export scope before Local Browser performs those actions, or choose the guided fallback.
-3. Download the completed export's **Items ZIP** and attach it to the agent. A Reports ZIP alone is not sufficient. Cloud-hosted Chat/Agent Builder cannot read a laptop path; upload the file instead.
+2. Follow guided Purview steps in Chat/Agent Builder. In Cowork or Scout, review and approve the exact search/export scope before the authorized host browser performs those actions, or choose the guided fallback.
+3. Download the completed export's **Items ZIP** and attach it to the agent, or give Scout its exact local path with authorized folder access. A Reports ZIP alone is not sufficient. Cloud-hosted Chat/Agent Builder cannot read a laptop path; upload the file instead.
 4. The agent executes the bundled helper, isolates the exact conversation, orders its turns and creates downloadable artifacts.
 5. Review the reported recovered count, exclusions and completeness caveats. If there are gaps, export the missing timeframe and attach the additional Items ZIP; the helper can merge overlapping exports.
 
@@ -88,7 +95,7 @@ Without an independently established expected count, the result is a **recovered
 
 ## For agents and technical operators
 
-Read the selected package's `SKILL.md` before executing the workflow. Use actual uploaded-file and script-resource paths, inspect execution results, and return genuine downloadable artifact references. Do not make the user parse individual HTML attachments or run terminal commands when the host can execute the helper.
+Read the selected package's `SKILL.md` before executing the workflow. In Scout, load the registered skill and resolve its recorded companion-script path. Use actual uploaded-file or authorized local-file paths, inspect execution results, and return genuine artifact references or verified local paths through the host's supported mechanism. Use properly URL-encoded local file links only where supported; never invent cloud download links. Do not make the user parse individual HTML attachments or run terminal commands when the host can execute the helper.
 
 The helper's CLI reference is available with `node scripts/recover-chat.cjs --help`, run from either unpacked skill folder. Discovery uses `--input "<Items ZIP>" --mailbox "<authorized SMTP address>" --list`.
 
