@@ -1,0 +1,100 @@
+THIS PACKAGE: COWORK LOCAL BROWSER WITH GUIDED FALLBACK
+
+COPILOT CONVERSATION RECOVERY - TWO SKILL VARIANTS
+
+This ZIP contains root SKILL.md, an offline reconstruction helper, and license notices.
+It contains no chat exports, user account identifiers, tenant IDs, search IDs or credentials.
+
+CHOOSE THE APPROPRIATE VARIANT
+copilot-chat-recovery-skill.zip: Native Copilot Chat skills (where available, including
+tenant/private-preview features) and Agent Builder. The agent GUIDES the user or their
+administrator through Purview search/export/download, then EXECUTES reconstruction
+on the user-uploaded Items ZIP. No browser automation is attempted.
+
+cowork-copilot-chat-recovery-skill.zip: Cowork. Uses the authorized LOCAL BROWSER feature
+to run a previewed/approved search and export when the intended signed-in account has
+Purview permissions. If Local Browser, authentication, permissions or downloading is
+blocked, it guides the user through that step instead. Then the agent EXECUTES the same
+reconstruction engine. Supplying an export skips browser/search work in either variant.
+
+NATIVE COPILOT CHAT IMPORT
+If your Chat tenant/preview supports skills directly, import copilot-chat-recovery-skill.zip
+through the native skills management/upload UI exposed there. Its exact menu labels may
+vary; this package does not assume or invent the private-preview UI.
+You do not need to create an Agent Builder agent if native Chat skills are already available.
+
+AGENT BUILDER IMPORT
+Copilot Chat > Agents & Skills > New agent, or open your existing declarative agent.
+Configure > Skills > Add > upload copilot-chat-recovery-skill.zip, review and use Try it.
+Upload the COMPLETE ZIP, not SKILL.md by itself.
+Availability depends on licensing, tenant rollout and governance, including Information Barriers.
+https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/agent-builder-add-skills
+
+COWORK IMPORT
+Cowork > Customize > Skills > arrow next to Add > Upload skill.
+Choose cowork-copilot-chat-recovery-skill.zip. Wait for syncing, then start a new conversation.
+Invoke the skill by name or say: Recover a retained Copilot conversation as a Word transcript.
+Enable/connect Cowork Local Browser when you want the agent to operate the Purview UI;
+verify the displayed tenant/account has the required eDiscovery search and export access.
+Microsoft documentation:
+https://learn.microsoft.com/en-us/copilot/cowork/cowork-customize#upload-a-skill
+
+USER FLOW
+Start with the conversation URL or title, mailbox and approximate timeframe.
+Chat/Agent Builder: follow the skill's Purview guidance, download the Items ZIP, and attach it.
+Cowork: approve the scoped search/export and let Local Browser run it, or supply the ZIP yourself.
+The agent should then execute the included script and return a downloadable Word transcript,
+not instruct you to parse HTML files or run terminal commands.
+You can start by attaching an existing export; the skill will skip the Purview stage.
+
+RUNTIME BOUNDARIES
+The skill does not grant Purview permissions, browser control, connectors or filesystem access.
+Only the Cowork variant uses actual authorized Local Browser tools for Purview actions.
+Search/export and any optional role assignment have separate human approval gates.
+The guided variant does not attempt role/search/export writes itself.
+Blocked downloads require a manual download and attachment, not a restriction bypass.
+The declarative-agent script sandbox has no runtime network calls or package installations.
+The helper is bundled: never install dependencies in that sandbox.
+The agent locates its imported script resource and uploaded file in the host execution area,
+confirms Node.js availability and executes there. A laptop C:\\Downloads path is NOT accessible
+to cloud Chat/Agent Builder; attach the ZIP instead. Script execution can operate on the staged
+upload without browser access, authenticated API calls, network or npm/pip packages.
+If Node or authorized export-byte access is genuinely unavailable, report the exact blocker.
+Do not confuse a script shown in chat with a script that has actually been executed.
+https://learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/declarative-agent-skills
+
+OFFLINE HELPER - AGENT EXECUTION REFERENCE
+Resolve this imported companion script in the host execution area; do not require the
+user to extract it or install software when the host can execute it. It supports native MSG Items ZIPs
+and directories containing the observed Purview MSG / SWIFT AdaptiveCard schema.
+It does not support PST files, every future export schema or all Cowork task formats.
+
+node scripts/recover-chat.cjs --help
+node scripts/recover-chat.cjs --input "<Items ZIP>" --mailbox "<authorized SMTP address>" --list
+node scripts/recover-chat.cjs --input "<Items ZIP>" --mailbox "<authorized SMTP address>" --conversation-id "<verified GUID>" --output-dir "<new private directory>" --timezone "<IANA timezone>" --recovered-date "<host current YYYY-MM-DD>"
+
+Optional --expected-turns <independently known count> and --title "<confirmed chat title>".
+Repeat --input "<additional Items ZIP>" to combine distant portions and overlapping exports
+without flattening folders or overwriting messages. Deduplication preserves input provenance.
+No eight-turn or other conversation-size assumption is built in.
+The CLI does not write into the input ZIP or overwrite existing output artifacts.
+
+OUTPUTS
+Recovered-Copilot-Chat.docx
+Recovered-Copilot-Chat.json
+Recovered-Copilot-Chat-Sources.zip (matching native MSGs, HTML attachments, hash manifest)
+
+The helper itself is strictly offline; it does not log in, change roles, create searches
+or export from Purview. Stage A belongs to the user (guided) or approved Cowork Local Browser.
+It generates DOCX, JSON and source ZIP; PDF rendering and sensitivity labels use approved
+host document capabilities. Publish the actual generated files through the host's artifact
+mechanism, not invented download links or an inaccessible sandbox path.
+Validate the actual DOCX, compare exact recovered content and original-record hashes,
+render it with an approved Word/LibreOffice/document tool and visually inspect all pages.
+Do not declare a fully verified transcript when these steps are blocked.
+
+PRIVACY
+Do not run untrusted recovered HTML, upload private records automatically or send chat data
+to third-party services. Honor source sensitivity labels and usage rights; stop on protected
+content that cannot be used in the chosen destination. Label generated files before sharing.
+This skill retrieves text; it does not repair or restore the original Copilot chat UI.
